@@ -249,11 +249,11 @@
     <div id="errorMsg" class="error-msg" style="display:none"></div>
     <div class="form-group">
       <label for="fullName">Họ tên</label>
-      <input type="text" id="fullName" placeholder="VD: Phạm Tuấn Anh" />
+      <input type="text" id="fullName" placeholder="VD: Nguyễn Văn A" />
     </div>
     <div class="form-group">
       <label for="driverId">ID hoạt động</label>
-      <input type="text" id="driverId" placeholder="VD: 12345678" />
+      <input type="text" id="driverId" placeholder="VD: GRAB-12345678" />
     </div>
     <div class="form-group">
       <label for="phone">Số điện thoại</label>
@@ -369,7 +369,7 @@
     slotData.locations.forEach(function(loc) {
       var hasAny = slotData.dates.some(function(d) {
         return slotData.times.some(function(t, ti) {
-          return slotData.counts[loc][d][t] < slotData.maxCapacity &&
+          return slotData.counts[loc][d][t] < slotData.maxCapacity[loc] &&
                  !isTimePastToday(d, ti);
         });
       });
@@ -401,7 +401,7 @@
     slotData.dates.forEach(function(dateStr) {
       // A date is unavailable if all its time slots are full or past
       var hasAny = slotData.times.some(function(t, ti) {
-        return slotData.counts[selected.location][dateStr][t] < slotData.maxCapacity &&
+        return slotData.counts[selected.location][dateStr][t] < slotData.maxCapacity[selected.location] &&
                !isTimePastToday(dateStr, ti);
       });
       var d = parseDateStr(dateStr);
@@ -439,7 +439,7 @@
     container.innerHTML = '';
     slotData.times.forEach(function(time, i) {
       var count     = slotData.counts[selected.location][selected.date][time];
-      var remaining = slotData.maxCapacity - count;
+      var remaining = slotData.maxCapacity[selected.location] - count;
       var isPast    = isTimePastToday(selected.date, i);
       var isFull    = remaining <= 0 || isPast;
 
